@@ -32,7 +32,7 @@ bool ClockReplacer::Victim(frame_id_t *frame_id) {
     clock_hand %= capacity;
 
     // If the slot is empty or pinned (the page is not in the replacer)
-    if (buffer_pool[clock_hand] == -1 || !replacer.count(buffer_pool[clock_hand])) {
+    if (buffer_pool[clock_hand] == -1 || replacer.count(buffer_pool[clock_hand]) == 0) {
       clock_hand++;
       continue;
     }
@@ -56,7 +56,7 @@ bool ClockReplacer::Victim(frame_id_t *frame_id) {
   // If no victim after sweeping, find the smallest frame_id as victim
   int smallest_id = INT8_MAX;
   for (int i = 0; i < capacity; i++) {
-    if (buffer_pool[i] == -1 || !replacer.count(buffer_pool[i])) {
+    if (buffer_pool[i] == -1 || replacer.count(buffer_pool[i]) == 0) {
       continue;
     }
 
@@ -73,7 +73,7 @@ bool ClockReplacer::Victim(frame_id_t *frame_id) {
 }
 
 void ClockReplacer::Pin(frame_id_t frame_id) {
-  if (frame_id > capacity || !replacer.count(frame_id)) { return; }
+  if (frame_id > capacity || replacer.count(frame_id) == 0) { return; }
   replacer.erase(frame_id);
 }
 
@@ -81,7 +81,7 @@ void ClockReplacer::Unpin(frame_id_t frame_id) {
   if (frame_id > capacity) {return;}
 
   // If not in the buffer pool, add it to the buffer pool and the replacer
-  if (!page_table.count(frame_id)) {
+  if (page_table.count(frame_id) == 0) {
     for (int i = 0; i < capacity; i++) {
       // Find the empty slot clockwise from the initial clock hand position
       int slot = (i + clock_hand) % capacity;

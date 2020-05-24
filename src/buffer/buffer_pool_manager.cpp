@@ -13,7 +13,6 @@
 #include "buffer/buffer_pool_manager.h"
 
 #include <list>
-#include <unordered_map>
 
 namespace bustub {
 
@@ -46,7 +45,7 @@ Page *BufferPoolManager::FetchPageImpl(page_id_t page_id) {
   frame_id_t frame_id = -1;
 
   // If the requested page P exists in the page table
-  if (page_table_.count(page_id)) {
+  if (page_table_.count(page_id) != 0) {
     frame_id = page_table_[page_id];
     replacer_->Pin(frame_id);
     pages_[frame_id].pin_count_++;
@@ -83,7 +82,7 @@ Page *BufferPoolManager::FetchPageImpl(page_id_t page_id) {
 }
 
 bool BufferPoolManager::UnpinPageImpl(page_id_t page_id, bool is_dirty) {
-  if (!page_table_.count(page_id)) { return false; }
+  if (page_table_.count(page_id) == 0) { return false; }
 
   frame_id_t frame_id = page_table_[page_id];
   if (pages_[frame_id].pin_count_ == 1) {
@@ -100,7 +99,7 @@ bool BufferPoolManager::UnpinPageImpl(page_id_t page_id, bool is_dirty) {
 
 bool BufferPoolManager::FlushPageImpl(page_id_t page_id) {
   // Make sure you call DiskManager::WritePage!
-  if (!page_table_.count(page_id)) { return false; }
+  if (page_table_.count(page_id) == 0) { return false; }
   disk_manager_->WritePage(page_id, pages_[page_table_[page_id]].GetData());
   return true;
 }
@@ -150,7 +149,7 @@ bool BufferPoolManager::DeletePageImpl(page_id_t page_id) {
   // 3.   Otherwise, P can be deleted. Remove P from the page table, reset its metadata and return it to the free list.
 
   // If the page does not exist
-  if (!page_table_.count(page_id)) { return true; }
+  if (page_table_.count(page_id) == 0) { return true; }
 
   // If the page exists, but has a non-zero pin-count
   if (pages_[page_table_[page_id]].GetPinCount() != 0) { return false; }
