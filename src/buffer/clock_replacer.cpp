@@ -54,7 +54,7 @@ bool ClockReplacer::Victim(frame_id_t *frame_id) {
   }
 
   // If no victim after sweeping, find the smallest frame_id as victim
-  int smallest_id = INT_MAX;
+  int smallest_id = INT8_MAX;
   for (int i = 0; i < capacity; i++) {
     if (buffer_pool[i] == -1 || !replacer.count(buffer_pool[i])) {
       continue;
