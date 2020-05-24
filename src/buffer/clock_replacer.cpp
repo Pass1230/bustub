@@ -42,10 +42,7 @@ bool ClockReplacer::Victim(frame_id_t *frame_id) {
       sweep_num++;
       ref_bits[clock_hand] = 0;
       clock_hand++;
-    }
-
-      // If the reference bit is 0, evict the page (the victim)
-    else {
+    } else {  // If the reference bit is 0, evict the page (the victim)
       int victim_id = buffer_pool[clock_hand];
       *frame_id = victim_id;
       replacer.erase(victim_id);
@@ -96,9 +93,7 @@ void ClockReplacer::Unpin(frame_id_t frame_id) {
         break;
       }
     }
-  }
-    // If in the buffer pool, add it to the replacer
-  else {
+  } else {  // If in the buffer pool, add it to the replacer
     replacer.insert(frame_id);
     ref_bits[page_table[frame_id]] = 1;
   }

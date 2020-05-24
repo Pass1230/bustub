@@ -49,11 +49,11 @@ class ClockReplacer : public Replacer {
 
  private:
   // TODO(student): implement me!
-  int capacity; // The capacity of buffer pool
+  int capacity;   // The capacity of buffer pool
   int clock_hand;
-  std::vector<frame_id_t> ref_bits; // The reference status of each element in the replacer
+  std::vector<frame_id_t> ref_bits;   // The reference status of each element in the replacer
   std::vector<frame_id_t> buffer_pool;
-  std::map<frame_id_t, int> page_table; // Keep track of pages in memory
+  std::map<frame_id_t, int> page_table;   // Keep track of pages in memory
   std::set<frame_id_t> replacer;
 };
 

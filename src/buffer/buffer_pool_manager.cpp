@@ -57,8 +57,7 @@ Page *BufferPoolManager::FetchPageImpl(page_id_t page_id) {
   if (!free_list_.empty()) {
     frame_id = free_list_.front();
     free_list_.pop_front();
-  }
-  else {
+  } else {
     replacer_->Victim(&frame_id);
   }
 
