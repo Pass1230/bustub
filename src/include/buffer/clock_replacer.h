@@ -13,9 +13,9 @@
 #pragma once
 
 #include <list>
-#include <map>
 #include <mutex>  // NOLINT
-#include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "buffer/replacer.h"
@@ -53,8 +53,8 @@ class ClockReplacer : public Replacer {
   int clock_hand;
   std::vector<frame_id_t> ref_bits;   // The reference status of each element in the replacer
   std::vector<frame_id_t> buffer_pool;
-  std::map<frame_id_t, int> page_table;   // Keep track of pages in memory
-  std::set<frame_id_t> replacer;
+  std::unordered_map<frame_id_t, int> page_table;   // Keep track of pages in memory
+  std::unordered_set<frame_id_t> replacer;
 };
 
 }  // namespace bustub
